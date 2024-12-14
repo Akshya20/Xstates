@@ -11,14 +11,13 @@ function States() {
     const [selectstat, setselectstat] = useState("");
     const [cities, setcity] = useState([]);
     const [selectcity, setseclectcity] = useState("");
-    const [loading, setloading] = useState(false);
     const fetchData = async () => {
         try {
             const response = await fetch(` https://crio-location-selector.onrender.com/countries`);
             const Data = await response.json();
             setcountry(Data);
-        } catch {
-
+        }  catch (error) {
+            console.error("Error fetching countries:", error);
         }
     }
     const fetchstat = async (countryName) => {
@@ -26,8 +25,8 @@ function States() {
             const response1 = await fetch(` https://crio-location-selector.onrender.com/country=${countryName}/states`);
             const Data1 = await response1.json();
             setstat(Data1);
-        } catch {
-
+        } catch (error) {
+            console.error("Error fetching states:", error);
         }
 
 
@@ -38,10 +37,9 @@ function States() {
             const response2 = await fetch(` https://crio-location-selector.onrender.com/country=${countryName}/state=${stateName}/cities`);
             const Data2 = await response2.json();
             setcity(Data2);
-        } catch {
-
+        } catch (error) {
+            console.error("Error fetching cities:", error);
         }
-
 
 
     }
@@ -56,17 +54,20 @@ function States() {
         setselectcount(countryName);
         setstat([]);
         setcity([]);
+        setselectcount("");
+        setselectstat("");
         fetchstat(countryName);
     }
     const handleC1 = (e) => {
         const stateName = e.target.value;
         setselectstat(stateName);
         setcity([]);
+        setselectcity("");
         fetchCity(countryName1, stateName);
     }
     const handleC2 = (e) => {
         setseclectcity(e.target.value);
-        setloading(true);
+        
 
     }
     return (
@@ -76,41 +77,39 @@ function States() {
                 <option value="" disabled>
                     Select country
                 </option>
-                {countries.map((country) => (
-                    <option key={country.key} value={country.value}>
+                {countries.map((country,index) => (
+                    <option key={index} value={country}>
                         {country}
                     </option>
                 ))}
             </select>
-            <select value={selectstat} onChange={handleC1}>
+            <select value={selectstat} onChange={handleC1} disabled={!countryName1}>
                 <option value="" disabled>
                     Select state
                 </option>
-                {states.map((state) => (
-                    <option key={state.key} value={state.value}>
+                {states.map((state,index) => (
+                    <option key={index} value={state}>
                         {state}
                     </option>
                 ))}
             </select>
-            <select value={selectcity} onChange={handleC2}>
+            <select value={selectcity} onChange={handleC2} disabled={!selectstat}>
                 <option value="" disabled>
                     Select city
                 </option>
-                {cities.map((city) => (
-                    <option key={city.key} value={city.value}>
+                {cities.map((city,index) => (
+                    <option key={index} value={city}>
                         {city}
                     </option>
                 ))}
             </select>
-            <div>
-                {
-                    loading ? (
-                        <p>"You Selected {selectcity}, {selectstat}, {countryName1}"</p>
-                    ) : (
-                        null
-                    )
-                }
-            </div>
+            {selectcity && selectstat && countryName1 && (
+                <div>
+                    <p>
+                        You selected {selectcity}, {selectstat}, {countryName1}
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
