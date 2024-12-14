@@ -54,15 +54,12 @@ function States() {
         setselectcount(countryName);
         setstat([]);
         setcity([]);
-        setselectcount("");
-        setselectstat("");
         fetchstat(countryName);
     }
     const handleC1 = (e) => {
         const stateName = e.target.value;
         setselectstat(stateName);
         setcity([]);
-        setseclectcity("");
         fetchCity(countryName1, stateName);
     }
     const handleC2 = (e) => {
@@ -83,7 +80,7 @@ function States() {
                     </option>
                 ))}
             </select>
-            <select value={selectstat} onChange={handleC1} disabled={!countryName1}>
+            <select value={selectstat} onChange={handleC1} >
                 <option value="" disabled>
                     Select state
                 </option>
@@ -93,7 +90,7 @@ function States() {
                     </option>
                 ))}
             </select>
-            <select value={selectcity} onChange={handleC2} disabled={!selectstat}>
+            <select value={selectcity} onChange={handleC2} >
                 <option value="" disabled>
                     Select city
                 </option>
