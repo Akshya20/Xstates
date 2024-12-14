@@ -62,7 +62,7 @@ function States() {
         const stateName = e.target.value;
         setselectstat(stateName);
         setcity([]);
-        setselectcity("");
+        setseclectcity("");
         fetchCity(countryName1, stateName);
     }
     const handleC2 = (e) => {
